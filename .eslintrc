@@ -1,0 +1,7 @@
+{
+  "extends": [
+    "auditor",
+    "auditor/react",
+    "auditor/typescript"
+  ]
+}

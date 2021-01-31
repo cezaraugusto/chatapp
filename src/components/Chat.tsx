@@ -1,20 +1,16 @@
 import React, {useState, useEffect, useRef} from 'react'
 
-import {auth, db} from '../api/firebase'
-
-interface IChat {
-  content: string
-  timestamp: number
-  uid: string
-}
+import {auth} from '../api/firebase'
+import type {IChat, TError} from '../types'
+import * as ChatAPI from '../api/chat'
 
 function Chat () {
   const currentUser = auth().currentUser
   const [user] = useState(currentUser)
   const [chats, setChats] = useState([] as IChat[])
   const [content, setContent] = useState('')
-  const [readError, setReadError] = useState(null)
-  const [writeError, setWriteError] = useState(null)
+  const [readError, setReadError] = useState(null as TError)
+  const [writeError, setWriteError] = useState(null as TError)
   const [loadingChats, setLoadingChats] = useState(false)
 
   const myRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
@@ -24,22 +20,10 @@ function Chat () {
     setLoadingChats(true)
 
     try {
-      db.ref('chats').on('value', snapshot => {
-        if (!snapshot || !snapshot.val()) return
-
-        const currentChatHistory: IChat[] = Object.values(snapshot.val())
-        const chatHistory: IChat[] = []
-
-        for (const chat of currentChatHistory) {
-          chatHistory.push(chat)
-        }
-
-        const chatHistorySorted = chatHistory
-          .sort((a, b) => a.timestamp - b.timestamp)
-
+      ChatAPI.readChats((chatHistory) => {
         const chatArea = myRef.current
 
-        setChats(chatHistorySorted)
+        setChats(chatHistory)
         chatArea?.scrollBy(0, chatArea.scrollHeight)
         setLoadingChats(false)
       })
@@ -53,23 +37,34 @@ function Chat () {
     setContent(event.target.value)
   }
 
+  const handleWriteMessage = (chatArea: HTMLDivElement | null) => {
+    setContent('')
+    chatArea?.scrollBy(0, chatArea.scrollHeight)
+  }
+
+  const handleWriteError = (error: {message: TError}) => {
+    const message = error?.message
+
+    if (message) setWriteError(message)
+  }
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     setWriteError(null)
 
     const chatArea = myRef.current
 
-    try {
-      await db.ref('chats').push({
-        content,
-        timestamp: Date.now(),
-        uid: user?.uid
-      })
+    const message: IChat = {
+      content,
+      timestamp: Date.now(),
+      uid: user?.uid || ''
+    }
 
-      setContent('')
-      chatArea?.scrollBy(0, chatArea.scrollHeight)
+    try {
+      ChatAPI.writeChats(message)
+      handleWriteMessage(chatArea)
     } catch (error) {
-      setWriteError(error.message)
+      handleWriteError(error)
     }
   }
 
@@ -104,8 +99,9 @@ function Chat () {
               </span>
             )
           }
+
           return (
-            <p
+            <div
               key={chat.timestamp}
               style={{
                 background: user?.uid === chat.uid ? 'lightgreen' : 'lightgray'
@@ -115,7 +111,7 @@ function Chat () {
               <div>
                 {formatTime(chat.timestamp)}
               </div>
-            </p>
+            </div>
           )
         })}
       </div>

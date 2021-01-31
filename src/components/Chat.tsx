@@ -3,15 +3,14 @@ import React, {useState, useEffect, useRef} from 'react'
 import {auth} from '../api/firebase'
 import type {IChat, TError} from '../types'
 import * as ChatAPI from '../api/chat'
-import Loading from '../components/Chat/Loading'
+import Loading from './Chat/Loading'
+import WriteArea from './Chat/WriteArea'
 
 function Chat () {
   const currentUser = auth().currentUser
   const [user] = useState(currentUser)
-  const [chats, setChats] = useState([] as IChat[])
-  const [content, setContent] = useState('')
-  const [readError, setReadError] = useState(null as TError)
-  const [writeError, setWriteError] = useState(null as TError)
+  const [chats, setChats] = useState<IChat[]>([])
+  const [readError, setReadError] = useState<TError>(null)
   const [loadingChats, setLoadingChats] = useState(false)
 
   const myRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
@@ -32,41 +31,6 @@ function Chat () {
       setReadError(error.message)
     }
   }, [])
-
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(event.target.value)
-  }
-
-  const handleWriteMessage = (chatArea: HTMLDivElement | null) => {
-    setContent('')
-    chatArea?.scrollBy(0, chatArea.scrollHeight)
-  }
-
-  const handleWriteError = (error: {message: TError}) => {
-    const message = error?.message
-
-    if (message) setWriteError(message)
-  }
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-    setWriteError(null)
-
-    const chatArea = myRef.current
-
-    const message: IChat = {
-      content,
-      timestamp: Date.now(),
-      uid: user?.uid || ''
-    }
-
-    try {
-      ChatAPI.writeChats(message)
-      handleWriteMessage(chatArea)
-    } catch (error) {
-      handleWriteError(error)
-    }
-  }
 
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp)
@@ -110,17 +74,7 @@ function Chat () {
           )
         })}
       </div>
-      {/* TODO: messagesender */}
-      <form onSubmit={handleSubmit}>
-        <textarea
-          name='content'
-          onChange={handleChange}
-          value={content}
-        />
-        {/* TODO: errorbanner component */}
-        {writeError ? <p>{writeError}</p> : null}
-        <input type='submit' value='Send!' />
-      </form>
+      <WriteArea />
     </div>
   )
 }

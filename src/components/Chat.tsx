@@ -3,6 +3,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {auth} from '../api/firebase'
 import type {IChat, TError} from '../types'
 import * as ChatAPI from '../api/chat'
+import Loading from '../components/Chat/Loading'
 
 function Chat () {
   const currentUser = auth().currentUser
@@ -29,7 +30,6 @@ function Chat () {
       })
     } catch (error) {
       setReadError(error.message)
-      setLoadingChats(false)
     }
   }, [])
 
@@ -84,12 +84,7 @@ function Chat () {
     <div>
       <hr />
       <div ref={myRef}>
-        {/* TODO: loading component */}
-        {
-          loadingChats
-            ? <span className='sr-only'>Loading...</span>
-            : ''
-        }
+        {loadingChats && <Loading />}
         {/* TODO: messagelist component */}
         {chats.map((chat: IChat) => {
           if (readError) {

@@ -5,6 +5,7 @@ import type {IChat, TError} from '../types'
 import * as ChatAPI from '../api/chat'
 import Loading from './Chat/Loading'
 import WriteArea from './Chat/WriteArea'
+import ReadArea from './Chat/ReadArea'
 
 function Chat () {
   const currentUser = auth().currentUser
@@ -32,24 +33,12 @@ function Chat () {
     }
   }, [])
 
-  const formatTime = (timestamp: number) => {
-    const date = new Date(timestamp)
-
-    const time = {
-      date: date.toLocaleDateString(),
-      hour: date.getHours(),
-      minute: date.getMinutes()
-    }
-
-    return `${time.date} ${time.hour}:${time.minute}`
-  }
-
   return (
     <div>
       <hr />
-      <div ref={myRef}>
+      <section ref={myRef}>
         {loadingChats && <Loading />}
-        {/* TODO: messagelist component */}
+
         {chats.map((chat: IChat) => {
           if (readError) {
             return (
@@ -59,21 +48,10 @@ function Chat () {
             )
           }
 
-          return (
-            <div
-              key={chat.timestamp}
-              style={{
-                background: user?.uid === chat.uid ? 'lightgreen' : 'lightgray'
-              }}
-            >
-              {chat.content}
-              <div>
-                {formatTime(chat.timestamp)}
-              </div>
-            </div>
-          )
-        })}
-      </div>
+          return <ReadArea key={chat.timestamp} user={user} chat={chat} />
+        })
+        }
+      </section>
       <WriteArea />
     </div>
   )

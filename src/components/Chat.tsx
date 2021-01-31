@@ -6,6 +6,7 @@ import * as ChatAPI from '../api/chat'
 import Loading from './Chat/Loading'
 import WriteArea from './Chat/WriteArea'
 import ReadArea from './Chat/ReadArea'
+import ErrorMessage from './Chat/ErrorMessage'
 
 function Chat () {
   const currentUser = auth().currentUser
@@ -39,15 +40,8 @@ function Chat () {
       <section ref={myRef}>
         {loadingChats && <Loading />}
 
-        {chats.map((chat: IChat) => {
-          if (readError) {
-            return (
-              <span>
-                Unable to read messages! {readError}
-              </span>
-            )
-          }
-
+        {chats.map((chat) => {
+          if (readError) return <ErrorMessage error={readError} />
           return <ReadArea key={chat.timestamp} user={user} chat={chat} />
         })
         }

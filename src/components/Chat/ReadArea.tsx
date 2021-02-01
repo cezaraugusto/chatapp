@@ -11,7 +11,7 @@ interface IReadArea {
 function ReadArea ({user, chat}: IReadArea) {
   const date = new Date(chat.timestamp)
 
-  const formatTime = (timestamp: number) => {
+  const formatTime = () => {
     const time = {
       date: date.toLocaleDateString(),
       hour: date.getHours(),
@@ -30,7 +30,7 @@ function ReadArea ({user, chat}: IReadArea) {
     >
       {chat.content}
       <footer>
-        {formatTime(chat.timestamp)} by&nbsp;
+        {`${formatTime()} by `}
         <time dateTime={date.toDateString()}>
           {chat.anonymousUsername}
         </time>

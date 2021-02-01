@@ -8,7 +8,7 @@ import {
 
 import './App.css'
 import {auth} from './api/firebase'
-import HomePage from './components/Chat'
+import HomePage from './components/HomePage'
 import HowTo from './components/HowTo'
 import {authenticateAnonymously} from './api/authenticateAnonymously'
 

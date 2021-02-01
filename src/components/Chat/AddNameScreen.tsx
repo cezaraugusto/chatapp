@@ -6,21 +6,21 @@ interface IAddNameScreen {
 
 function AddNameScreen ({setAnonymousUsername}: IAddNameScreen) {
   const [name, setName] = useState('')
-  const [isOpenDialog, setIsOpenDialog] = useState(true)
+  const [showScreen, setLockScreen] = useState(true)
 
   const handleSubmit = () => {
     setAnonymousUsername(name)
-    setIsOpenDialog(false)
+    setLockScreen(false)
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value)
   }
 
-  if (!isOpenDialog) return null
+  if (!showScreen) return null
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className='firstScreen' onSubmit={handleSubmit}>
       <input
         type='text'
         onChange={handleChange}

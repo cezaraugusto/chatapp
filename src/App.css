@@ -29,3 +29,11 @@ nav {
   height: 500px;
   overflow-x: scroll;
 }
+
+.firstScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 110px);
+  flex-direction: column;
+}

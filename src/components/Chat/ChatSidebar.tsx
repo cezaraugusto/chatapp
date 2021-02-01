@@ -1,10 +1,10 @@
 import React, {useRef} from 'react'
 import type {User} from '@firebase/auth-types'
 
-import type {IChat, TError} from '../types'
-import WriteArea from './Chat/WriteArea'
-import ReadArea from './Chat/ReadArea'
-import ErrorMessage from './Chat/ErrorMessage'
+import type {IChat, TError} from '../../types'
+import WriteArea from './WriteArea'
+import ReadArea from './ReadArea'
+import ErrorMessage from './ErrorMessage'
 
 interface IChatSidebar {
   user: User | null
@@ -18,7 +18,8 @@ function ChatSidebar (props: IChatSidebar) {
   const chatRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
 
   return (
-    <>
+    <section id='sidebar'>
+      <header>Logged in as: {anonymousUsername}</header>
       <section
         ref={chatRef}
         style={{height: '500px', overflow: 'scroll'}}
@@ -39,8 +40,7 @@ function ChatSidebar (props: IChatSidebar) {
         chatArea={chatRef}
         anonymousUsername={anonymousUsername}
       />
-      <div>Logged in as: {anonymousUsername}</div>
-    </>
+    </section>
   )
 }
 

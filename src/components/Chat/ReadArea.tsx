@@ -9,9 +9,9 @@ interface IReadArea {
 }
 
 function ReadArea ({user, chat}: IReadArea) {
-  const formatTime = (timestamp: number) => {
-    const date = new Date(timestamp)
+  const date = new Date(chat.timestamp)
 
+  const formatTime = (timestamp: number) => {
     const time = {
       date: date.toLocaleDateString(),
       hour: date.getHours(),
@@ -22,17 +22,20 @@ function ReadArea ({user, chat}: IReadArea) {
   }
 
   return (
-    <div
+    <article
       key={chat.timestamp}
       style={{
         background: user?.uid === chat.uid ? 'lightgreen' : 'lightgray'
       }}
     >
       {chat.content}
-      <div>
-        {formatTime(chat.timestamp)} by {chat.anonymousUsername}
-      </div>
-    </div>
+      <footer>
+        {formatTime(chat.timestamp)} by&nbsp;
+        <time dateTime={date.toDateString()}>
+          {chat.anonymousUsername}
+        </time>
+      </footer>
+    </article>
   )
 }
 

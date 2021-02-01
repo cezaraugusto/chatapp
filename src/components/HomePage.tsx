@@ -5,7 +5,7 @@ import type {IChat, TError} from '../types'
 import * as ChatAPI from '../api/chat'
 import Loading from './Chat/Loading'
 import AddNameScreen from './Chat/AddNameScreen'
-import ChatSidebar from './ChatSidebar'
+import ChatSidebar from './Chat/ChatSidebar'
 
 function HomePage () {
   const currentUser = auth().currentUser
@@ -32,19 +32,19 @@ function HomePage () {
   const chatProps = {user, chats, readError, anonymousUsername}
 
   return (
-    <div>
+    <>
       {loadingChats && <Loading />}
       {
         anonymousUsername === ''
           ? <AddNameScreen setAnonymousUsername={setAnonymousUsername} />
           : (
-            <section>
+            <main>
               <div>visual content</div>
               <ChatSidebar {...chatProps} />
-            </section>
+            </main>
             )
       }
-    </div>
+    </>
   )
 }
 

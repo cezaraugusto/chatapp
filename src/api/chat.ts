@@ -25,7 +25,7 @@ export function readChats (chatHistoryCb: IReadChats) {
 }
 
 export function writeChats (message: IChat) {
-  const {content, timestamp, uid} = message
+  const {content, timestamp, uid, anonymousUsername} = message
 
-  db.ref('chats').push({content, timestamp, uid})
+  db.ref('chats').push({content, timestamp, uid, anonymousUsername})
 }

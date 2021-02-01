@@ -30,7 +30,7 @@ function ReadArea ({user, chat}: IReadArea) {
     >
       {chat.content}
       <div>
-        {formatTime(chat.timestamp)}
+        {formatTime(chat.timestamp)} by {chat.anonymousUsername}
       </div>
     </div>
   )

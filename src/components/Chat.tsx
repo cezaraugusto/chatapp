@@ -7,10 +7,12 @@ import Loading from './Chat/Loading'
 import WriteArea from './Chat/WriteArea'
 import ReadArea from './Chat/ReadArea'
 import ErrorMessage from './Chat/ErrorMessage'
+import AddNameDialog from './Chat/AddNameDialog'
 
 function Chat () {
   const currentUser = auth().currentUser
   const [user] = useState(currentUser)
+  const [anonymousUsername, setAnonymousUsername] = useState('')
   const [chats, setChats] = useState<IChat[]>([])
   const [readError, setReadError] = useState<TError>(null)
   const [loadingChats, setLoadingChats] = useState(false)
@@ -36,17 +38,22 @@ function Chat () {
 
   return (
     <div>
-      <hr />
+      <AddNameDialog
+        anonymousUsername={anonymousUsername}
+        setAnonymousUsername={setAnonymousUsername}
+      />
       <section ref={myRef}>
         {loadingChats && <Loading />}
 
         {chats.map((chat) => {
           if (readError) return <ErrorMessage error={readError} />
+
           return <ReadArea key={chat.timestamp} user={user} chat={chat} />
         })
         }
       </section>
-      <WriteArea />
+      <WriteArea anonymousUsername={anonymousUsername} />
+      <div>Logged in as: {anonymousUsername}</div>
     </div>
   )
 }

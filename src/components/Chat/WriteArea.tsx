@@ -4,7 +4,11 @@ import {auth} from '../../api/firebase'
 import type {IChat, TError} from '../../types'
 import * as ChatAPI from '../../api/chat'
 
-function WriteArea () {
+interface IWriteArea {
+  anonymousUsername: string
+}
+
+function WriteArea ({anonymousUsername}: IWriteArea) {
   const currentUser = auth().currentUser
   const [user] = useState(currentUser)
   const [content, setContent] = useState('')
@@ -34,6 +38,7 @@ function WriteArea () {
     const chatArea = myRef.current
 
     const message: IChat = {
+      anonymousUsername: anonymousUsername,
       content,
       timestamp: Date.now(),
       uid: user?.uid || ''

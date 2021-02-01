@@ -7,7 +7,7 @@ import Loading from './Chat/Loading'
 import WriteArea from './Chat/WriteArea'
 import ReadArea from './Chat/ReadArea'
 import ErrorMessage from './Chat/ErrorMessage'
-import AddNameDialog from './Chat/AddNameDialog'
+import AddNameScreen from './Chat/AddNameScreen'
 
 function Chat () {
   const currentUser = auth().currentUser
@@ -17,7 +17,7 @@ function Chat () {
   const [readError, setReadError] = useState<TError>(null)
   const [loadingChats, setLoadingChats] = useState(false)
 
-  const myRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
+  const chatRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
 
   useEffect(() => {
     setReadError(null)
@@ -25,7 +25,7 @@ function Chat () {
 
     try {
       ChatAPI.readChats((chatHistory) => {
-        const chatArea = myRef.current
+        const chatArea = chatRef.current
 
         setChats(chatHistory)
         chatArea?.scrollBy(0, chatArea.scrollHeight)
@@ -38,22 +38,36 @@ function Chat () {
 
   return (
     <div>
-      <AddNameDialog
-        anonymousUsername={anonymousUsername}
-        setAnonymousUsername={setAnonymousUsername}
-      />
-      <section ref={myRef}>
-        {loadingChats && <Loading />}
+      {loadingChats && <Loading />}
+      {
+        anonymousUsername === ''
+          ? <AddNameScreen setAnonymousUsername={setAnonymousUsername} />
+          : (
+            <>
+              <section
+                ref={chatRef}
+                style={{height: '500px', overflow: 'scroll'}}
+              >
+                {chats.map((chat) => {
+                  if (readError) return <ErrorMessage error={readError} />
 
-        {chats.map((chat) => {
-          if (readError) return <ErrorMessage error={readError} />
-
-          return <ReadArea key={chat.timestamp} user={user} chat={chat} />
-        })
-        }
-      </section>
-      <WriteArea anonymousUsername={anonymousUsername} />
-      <div>Logged in as: {anonymousUsername}</div>
+                  return (
+                    <ReadArea
+                      key={chat.timestamp}
+                      user={user}
+                      chat={chat}
+                    />
+                  )
+                })}
+              </section>
+              <WriteArea
+                chatArea={chatRef}
+                anonymousUsername={anonymousUsername}
+              />
+              <div>Logged in as: {anonymousUsername}</div>
+            </>
+            )
+      }
     </div>
   )
 }

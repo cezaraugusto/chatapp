@@ -1,22 +1,20 @@
 import React, {useState} from 'react'
 
-interface IAddNameDialog {
-  anonymousUsername: string
+interface IAddNameScreen {
   setAnonymousUsername: (name: string) => void
 }
 
-function AddNameDialog ({
-  anonymousUsername,
-  setAnonymousUsername
-}: IAddNameDialog) {
+function AddNameScreen ({setAnonymousUsername}: IAddNameScreen) {
+  const [name, setName] = useState('')
   const [isOpenDialog, setIsOpenDialog] = useState(true)
 
   const handleSubmit = () => {
+    setAnonymousUsername(name)
     setIsOpenDialog(false)
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAnonymousUsername(event.target.value)
+    setName(event.target.value)
   }
 
   if (!isOpenDialog) return null
@@ -26,11 +24,11 @@ function AddNameDialog ({
       <input
         type='text'
         onChange={handleChange}
-        value={anonymousUsername}
+        value={name}
       />
       <input type='submit' value='Go chat!' />
     </form>
   )
 }
 
-export default AddNameDialog
+export default AddNameScreen

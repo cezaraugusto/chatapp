@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState} from 'react'
 
 import {auth} from '../../api/firebase'
 import type {IChat, TError} from '../../types'
@@ -6,23 +6,26 @@ import * as ChatAPI from '../../api/chat'
 
 interface IWriteArea {
   anonymousUsername: string
+  chatArea: React.MutableRefObject<HTMLDivElement | null>
 }
 
-function WriteArea ({anonymousUsername}: IWriteArea) {
+function WriteArea ({anonymousUsername, chatArea}: IWriteArea) {
   const currentUser = auth().currentUser
   const [user] = useState(currentUser)
   const [content, setContent] = useState('')
   const [writeError, setWriteError] = useState(null as TError)
 
-  const myRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
-
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value)
   }
 
-  const handleWriteMessage = (chatArea: HTMLDivElement | null) => {
+  const handleWriteMessage = (getChatArea: HTMLDivElement | null) => {
+    if (!getChatArea) return
+
     setContent('')
-    chatArea?.scrollBy(0, chatArea.scrollHeight)
+    const heightToScroll = getChatArea.scrollHeight
+
+    getChatArea?.scrollBy(0, heightToScroll)
   }
 
   const handleWriteError = (error: {message: TError}) => {
@@ -35,8 +38,6 @@ function WriteArea ({anonymousUsername}: IWriteArea) {
     event.preventDefault()
     setWriteError(null)
 
-    const chatArea = myRef.current
-
     const message: IChat = {
       anonymousUsername: anonymousUsername,
       content,
@@ -46,7 +47,7 @@ function WriteArea ({anonymousUsername}: IWriteArea) {
 
     try {
       ChatAPI.writeChats(message)
-      handleWriteMessage(chatArea)
+      handleWriteMessage(chatArea?.current)
     } catch (error) {
       handleWriteError(error)
     }

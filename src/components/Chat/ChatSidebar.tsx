@@ -19,11 +19,8 @@ function ChatSidebar (props: IChatSidebar) {
 
   return (
     <section id='sidebar'>
-      <header>Logged in as: {anonymousUsername}</header>
-      <section
-        ref={chatRef}
-        style={{height: '500px', overflow: 'scroll'}}
-      >
+      <header><b>Welcome,</b> {anonymousUsername}.</header>
+      <div className='chatList' ref={chatRef}>
         {chats.map((chat) => {
           if (readError) return <ErrorMessage error={readError} />
 
@@ -35,7 +32,7 @@ function ChatSidebar (props: IChatSidebar) {
             />
           )
         })}
-      </section>
+      </div>
       <WriteArea
         chatArea={chatRef}
         anonymousUsername={anonymousUsername}

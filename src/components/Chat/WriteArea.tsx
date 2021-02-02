@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {auth} from '../../api/firebase'
 import type {IChat, TError} from '../../types'
@@ -15,11 +15,7 @@ function WriteArea ({anonymousUsername, chatArea}: IWriteArea) {
   const [content, setContent] = useState('')
   const [writeError, setWriteError] = useState(null as TError)
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(event.target.value)
-  }
-
-  const handleWriteMessage = (getChatArea: HTMLDivElement | null) => {
+  const handleAfterWriteMessage = (getChatArea: HTMLDivElement | null) => {
     if (!getChatArea) return
 
     setContent('')
@@ -34,6 +30,28 @@ function WriteArea ({anonymousUsername, chatArea}: IWriteArea) {
     if (message) setWriteError(message)
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(event.target.value)
+  }
+
+  // Update service that will trigger a new message
+  // each time a new chat member joins.
+  useEffect(() => {
+    const message: IChat = {
+      anonymousUsername: anonymousUsername,
+      content: `${anonymousUsername} just joined.`,
+      timestamp: Date.now(),
+      uid: user?.uid || ''
+    }
+
+    try {
+      ChatAPI.writeChats(message)
+      handleAfterWriteMessage(chatArea?.current)
+    } catch (error) {
+      handleWriteError(error)
+    }
+  }, [chatArea, user?.uid, anonymousUsername])
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     setWriteError(null)
@@ -47,7 +65,7 @@ function WriteArea ({anonymousUsername, chatArea}: IWriteArea) {
 
     try {
       ChatAPI.writeChats(message)
-      handleWriteMessage(chatArea?.current)
+      handleAfterWriteMessage(chatArea?.current)
     } catch (error) {
       handleWriteError(error)
     }

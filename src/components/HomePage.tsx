@@ -5,7 +5,8 @@ import type {IChat, TError} from '../types'
 import * as ChatAPI from '../api/chat'
 import Loading from './Chat/Loading'
 import AddNameScreen from './Chat/AddNameScreen'
-import ChatSidebar from './Chat/ChatSidebar'
+import ChatSidebar from './Chat/Sidebar'
+import WorkspaceCanvas from './Workspace/Canvas'
 
 function HomePage () {
   const currentUser = auth().currentUser
@@ -39,7 +40,7 @@ function HomePage () {
           ? <AddNameScreen setAnonymousUsername={setAnonymousUsername} />
           : (
             <main>
-              <div>visual content</div>
+              <WorkspaceCanvas />
               <ChatSidebar {...chatProps} />
             </main>
             )

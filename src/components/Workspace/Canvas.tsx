@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import Diagram, {createSchema, useSchema} from 'beautiful-react-diagrams'
-import {DiagramSchema} from 'beautiful-react-diagrams/@types/DiagramSchema'
+import type {DiagramSchema} from 'beautiful-react-diagrams/@types/DiagramSchema'
 
 // The diagram model
 // nodes: [

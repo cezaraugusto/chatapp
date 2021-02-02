@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 
+import * as UnauthenticatedUserAPI from '../../api/unauthenticatedUsers'
+
 interface IAddNameScreen {
   setAnonymousUsername: (name: string) => void
 }
@@ -10,6 +12,7 @@ function AddNameScreen ({setAnonymousUsername}: IAddNameScreen) {
 
   const handleSubmit = () => {
     setAnonymousUsername(name)
+    UnauthenticatedUserAPI.setUnauthenticatedUserNode(name)
     setLockScreen(false)
   }
 

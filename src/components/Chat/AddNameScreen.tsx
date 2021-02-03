@@ -1,23 +1,22 @@
 import React, {useState} from 'react'
 
-import * as UnauthenticatedUserAPI from '../../api/unauthenticatedUsers'
-
 interface IAddNameScreen {
-  setAnonymousUsername: (name: string) => void
+  user: any
+  setAnonymousUsername: (username: string) => void
 }
 
 function AddNameScreen ({setAnonymousUsername}: IAddNameScreen) {
-  const [name, setName] = useState('')
+  const [username, setUsername] = useState('')
   const [showScreen, setLockScreen] = useState(true)
 
   const handleSubmit = () => {
-    setAnonymousUsername(name)
-    UnauthenticatedUserAPI.setUnauthenticatedUserNode(name)
+    setAnonymousUsername(username)
+
     setLockScreen(false)
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value)
+    setUsername(event.target.value)
   }
 
   if (!showScreen) return null
@@ -27,9 +26,9 @@ function AddNameScreen ({setAnonymousUsername}: IAddNameScreen) {
       <input
         type='text'
         onChange={handleChange}
-        value={name}
+        value={username}
       />
-      <input type='submit' value='Go chat!' />
+      <input type='submit' disabled={username === ''} value='Go chat!' />
     </form>
   )
 }

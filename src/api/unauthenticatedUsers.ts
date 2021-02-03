@@ -1,20 +1,23 @@
 
 import {db} from './firebase'
 
-export function readUnauthenticatedUsers () {
-  const chatHistory: string[] = []
+interface IReadUsers {
+  (unauthenticatedUsers: any[]): void
+}
 
+export function readUnauthenticatedUsers (userCb: IReadUsers) {
   db.ref('unauthenticatedUsers').on('value', snapshot => {
     if (!snapshot || !snapshot.val()) return
 
-    const currentChatHistory: string[] = Object.values(snapshot.val())
+    const unauthenticatedUsers: any[] = []
+    const currentUsers: any[] = Object.values(snapshot.val())
 
-    for (const chat of currentChatHistory) {
-      chatHistory.push(chat)
+    for (const user of currentUsers) {
+      unauthenticatedUsers.push(user)
     }
-  })
 
-  return chatHistory
+    userCb(unauthenticatedUsers)
+  })
 }
 
 interface IUnauthenticatedUserNode {
@@ -28,13 +31,8 @@ export function setUnauthenticatedUserNode (
 ) {
   db.ref('unauthenticatedUsers')
     .push({
-      node: {
-        id: uid,
-        content: username,
-        coordinates
-      },
-      link: [
-        {input: null, output: null}
-      ]
+      id: `${uid}-${username}`,
+      content: username,
+      coordinates
     })
 }

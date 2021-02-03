@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react'
 import {auth} from '../api/firebase'
 import type {IChat, TError} from '../types'
 import * as ChatAPI from '../api/chat'
+import * as UnauthenticatedUserAPI from '../api/unauthenticatedUsers'
 import Loading from './Chat/Loading'
 import AddNameScreen from './Chat/AddNameScreen'
 import ChatSidebar from './Chat/Sidebar'
@@ -20,15 +21,24 @@ function HomePage () {
     setReadError(null)
     setLoadingChats(true)
 
-    try {
-      ChatAPI.readChats((chatHistory) => {
-        setChats(chatHistory)
-        setLoadingChats(false)
+    const readChats = ChatAPI.readChats((chatHistory) => {
+      setChats(chatHistory)
+      setLoadingChats(false)
+    })
+
+    // If user ID exist, delete previous node
+    // and start one from scratch. This prevents
+    // duplicated entries during local dev.
+    if (anonymousUsername) {
+      UnauthenticatedUserAPI.setUnauthenticatedUserNode({
+        username: anonymousUsername,
+        uid: (Date.now()).toString(),
+        coordinates: [150, 60]
       })
-    } catch (error) {
-      setReadError(error.message)
     }
-  }, [])
+
+    return () => readChats
+  }, [anonymousUsername])
 
   const chatProps = {user, chats, readError, anonymousUsername}
 
@@ -37,10 +47,15 @@ function HomePage () {
       {loadingChats && <Loading />}
       {
         anonymousUsername === ''
-          ? <AddNameScreen setAnonymousUsername={setAnonymousUsername} />
+          ? (
+            <AddNameScreen
+              user={user}
+              setAnonymousUsername={setAnonymousUsername}
+            />
+            )
           : (
             <main>
-              <WorkspaceCanvas />
+              <WorkspaceCanvas /> {/** read from sourc */}
               <ChatSidebar {...chatProps} />
             </main>
             )

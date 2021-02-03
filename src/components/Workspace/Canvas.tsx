@@ -1,7 +1,10 @@
-import React, {useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import Diagram, {createSchema, useSchema} from 'beautiful-react-diagrams'
 import type {DiagramSchema} from 'beautiful-react-diagrams/@types/DiagramSchema'
+import uniqBy from 'lodash/uniqBy'
 
+import 'beautiful-react-diagrams/styles.css'
+import * as UsersAPI from '../../api/unauthenticatedUsers'
 // The diagram model
 // nodes: [
 //   {id: 'node-1', content: 'Node 1', coordinates: [250, 60]},
@@ -14,20 +17,41 @@ import type {DiagramSchema} from 'beautiful-react-diagrams/@types/DiagramSchema'
 //   {input: 'node-1', output: 'node-3'},
 //   {input: 'node-1', output: 'node-4'}
 // ]
-const schemaCreator = (schema: any) => createSchema({...schema})
 
-const WorkspaceCanvas = (chatUserSchema: any) => {
-  const initialSchema = schemaCreator(chatUserSchema)
-  const [schema, {onChange}] = useSchema(initialSchema)
+const WorkspaceCanvas = () => {
+  const [nodeList, setNodeList] = useState([])
+  const initialSchema = createSchema({nodes: nodeList, links: []})
+
+  const [schema, {addNode, onChange}] = useSchema(initialSchema)
 
   const handleOnChange = (newSchema: DiagramSchema<unknown>) => {
     onChange(newSchema)
-    console.log('mas mudaste!')
   }
+
+  useEffect(() => {
+    const unauthUsers = UsersAPI
+      .readUnauthenticatedUsers((currentUsers) => {
+        setNodeList(currentUsers as any)
+      })
+
+    return () => unauthUsers
+  }, [])
+
+  useMemo(() => {
+    const addNodeList = nodeList.map(node => addNode(node))
+
+    return () => addNodeList
+  }, [addNode, nodeList])
 
   return (
     <div style={{height: '550px'}}>
-      <Diagram schema={schema} onChange={handleOnChange} />
+      <Diagram
+        schema={{
+          links: [],
+          nodes: uniqBy(schema.nodes, 'id')
+        }}
+        onChange={handleOnChange}
+      />
     </div>
   )
 }

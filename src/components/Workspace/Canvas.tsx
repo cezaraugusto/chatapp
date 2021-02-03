@@ -5,18 +5,7 @@ import uniqBy from 'lodash/uniqBy'
 
 import 'beautiful-react-diagrams/styles.css'
 import * as UsersAPI from '../../api/unauthenticatedUsers'
-// The diagram model
-// nodes: [
-//   {id: 'node-1', content: 'Node 1', coordinates: [250, 60]},
-//   {id: 'node-2', content: 'Node 2', coordinates: [100, 200]},
-//   {id: 'node-3', content: 'Node 3', coordinates: [250, 220]},
-//   {id: 'node-4', content: 'Node 4', coordinates: [400, 20]}
-// ],
-// links: [
-//   {input: 'node-1', output: 'node-2'},
-//   {input: 'node-1', output: 'node-3'},
-//   {input: 'node-1', output: 'node-4'}
-// ]
+import CanvasNode from './CanvasNode'
 
 const WorkspaceCanvas = () => {
   const [nodeList, setNodeList] = useState([])
@@ -26,15 +15,16 @@ const WorkspaceCanvas = () => {
 
   const handleOnChange = (newSchema: DiagramSchema<unknown>) => {
     onChange(newSchema)
+    setNodeList(newSchema.nodes as any)
   }
 
   useEffect(() => {
-    const unauthUsers = UsersAPI
+    const unauthUsersNodeList = UsersAPI
       .readUnauthenticatedUsers((currentUsers) => {
         setNodeList(currentUsers as any)
       })
 
-    return () => unauthUsers
+    return () => unauthUsersNodeList
   }, [])
 
   useMemo(() => {
@@ -43,12 +33,19 @@ const WorkspaceCanvas = () => {
     return () => addNodeList
   }, [addNode, nodeList])
 
+  // Iterate over nodes so we can have them w/ custom styles
+  const customNodes = schema.nodes.map(node => ({
+    ...node,
+    render: CanvasNode,
+    data: {coordinates: node.coordinates}
+  }))
+
   return (
     <div style={{height: '550px'}}>
       <Diagram
         schema={{
           links: [],
-          nodes: uniqBy(schema.nodes, 'id')
+          nodes: uniqBy(customNodes, 'id')
         }}
         onChange={handleOnChange}
       />

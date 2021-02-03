@@ -33,7 +33,7 @@ function HomePage () {
       UsersAPI.setUnauthenticatedUserNode({
         username: anonymousUsername,
         uid: (Date.now()).toString(),
-        coordinates: [150, 60]
+        coordinates: [Math.random() * 500, Math.random() * 500]
       })
     }
   }, [anonymousUsername])
@@ -44,6 +44,7 @@ function HomePage () {
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleUnload)
+
     return () => {
       window.removeEventListener('beforeunload', handleUnload)
     }
@@ -64,7 +65,7 @@ function HomePage () {
             )
           : (
             <main>
-              <WorkspaceCanvas /> {/** read from sourc */}
+              <WorkspaceCanvas />
               <ChatSidebar {...chatProps} />
             </main>
             )

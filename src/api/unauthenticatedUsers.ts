@@ -36,6 +36,8 @@ export function setUnauthenticatedUserNode (
     .push({
       id: `${uid}-${username}`,
       content: username,
-      coordinates
+      coordinates,
+      inputs: [{id: `${username}-input`, alignment: 'left'}],
+      outputs: [{id: `${username}-output`, alignment: 'right'}]
     })
 }

@@ -7,7 +7,11 @@ import 'beautiful-react-diagrams/styles.css'
 import * as UsersAPI from '../../api/unauthenticatedUsers'
 import CanvasNode from './CanvasNode'
 
-const WorkspaceCanvas = () => {
+interface IWorkspaceCanvas {
+  id: string
+}
+
+const WorkspaceCanvas = ({id}: IWorkspaceCanvas) => {
   const [nodeList, setNodeList] = useState([])
   const initialSchema = createSchema({nodes: nodeList, links: []})
 
@@ -41,7 +45,9 @@ const WorkspaceCanvas = () => {
 
     return schema.nodes.map(node => ({
       ...node,
-      render: CanvasNode
+      render: CanvasNode,
+      // We can only drag the active user
+      disableDrag: node.id !== id
     }))
   }
 

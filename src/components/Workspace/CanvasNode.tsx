@@ -5,7 +5,7 @@ import {InView} from 'react-intersection-observer'
 import type {IChat} from '../../types'
 
 export default function CanvasNode (props: Pick<Node<IChat>, any>) {
-  const {id, content} = props
+  const {id, content, data} = props
   const [
     messageVisiblityInternal,
     setMessageVisibilityInternal
@@ -13,25 +13,28 @@ export default function CanvasNode (props: Pick<Node<IChat>, any>) {
 
   const nodeRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
   const root = nodeRef.current?.parentNode?.parentNode
-
   const onChange = (inView: boolean, entry: any) => {
     // TODO: Get current and intersected IDs
     // and lift state up so SidebarChat can react.
     // TOOD: Each message within the sidebar should
     // share the same ID
-    console.log('tracked')
+    if (inView) {
+      console.log('in view', entry.target.firstElementChild.id)
+    } else {
+      console.log('not in view')
+    }
   }
 
   return (
     <InView
       as='div'
       trackVisibility
-      threshold={[0, 0.25, 0.5, 0.75, 1]}
       delay={100}
-      rootMargin='200px'
+      rootMargin='50px'
       root={root as any}
       onChange={onChange}>
       <div
+        id={id}
         ref={nodeRef}
         style={{background: 'red', borderRadius: '10px'}}
       >

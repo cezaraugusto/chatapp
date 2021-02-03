@@ -29,14 +29,14 @@ function HomePage () {
     // If user ID exist, delete previous node
     // and start one from scratch. This prevents
     // duplicated entries during local dev.
-    if (anonymousUsername) {
+    if (user && anonymousUsername) {
       UsersAPI.setUnauthenticatedUserNode({
         username: anonymousUsername,
-        uid: (Date.now()).toString(),
+        uid: user?.uid,
         coordinates: [Math.random() * 500, Math.random() * 500]
       })
     }
-  }, [anonymousUsername])
+  }, [user, anonymousUsername])
 
   const handleUnload = () => {
     UsersAPI.deleteUnauthenticatedUser()
@@ -50,6 +50,9 @@ function HomePage () {
     }
   }, [])
 
+  if (!user) return null
+
+  const workspaceProps = {id: `${user?.uid}-${anonymousUsername}`}
   const chatProps = {user, chats, readError, anonymousUsername}
 
   return (
@@ -65,7 +68,7 @@ function HomePage () {
             )
           : (
             <main>
-              <WorkspaceCanvas />
+              <WorkspaceCanvas {...workspaceProps} />
               <ChatSidebar {...chatProps} />
             </main>
             )

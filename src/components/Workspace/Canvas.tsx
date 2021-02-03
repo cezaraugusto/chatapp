@@ -27,25 +27,30 @@ const WorkspaceCanvas = () => {
     return () => unauthUsersNodeList
   }, [])
 
-  useMemo(() => {
-    const addNodeList = nodeList.map(node => addNode(node))
+  useEffect(() => {
+    if (!nodeList) return
 
-    return () => addNodeList
+    for (const node of nodeList) {
+      addNode(node)
+    }
   }, [addNode, nodeList])
 
   // Iterate over nodes so we can have them w/ custom styles
-  const customNodes = schema.nodes.map(node => ({
-    ...node,
-    render: CanvasNode,
-    data: {coordinates: node.coordinates}
-  }))
+  const getNodes = () => {
+    if (schema.nodes.length === 0) return null
+
+    return schema.nodes.map(node => ({
+      ...node,
+      render: CanvasNode
+    }))
+  }
 
   return (
     <div style={{height: '550px'}}>
       <Diagram
         schema={{
           links: [],
-          nodes: uniqBy(customNodes, 'id')
+          nodes: uniqBy(getNodes(), 'id')
         }}
         onChange={handleOnChange}
       />

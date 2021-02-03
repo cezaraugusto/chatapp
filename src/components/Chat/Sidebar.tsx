@@ -5,6 +5,7 @@ import type {IChat, TError} from '../../types'
 import WriteArea from './WriteArea'
 import ReadArea from './ReadArea'
 import ErrorMessage from './ErrorMessage'
+import * as UsersAPI from '../../api/unauthenticatedUsers'
 
 interface IChatSidebar {
   user: User | null
@@ -17,9 +18,16 @@ function ChatSidebar (props: IChatSidebar) {
   const {user, chats, readError, anonymousUsername} = props
   const chatRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
 
+  const handleLogout = () => {
+    UsersAPI.deleteUnauthenticatedUser()
+  }
+
   return (
     <section id='sidebar'>
-      <header><b>Welcome,</b> {anonymousUsername}.</header>
+      <header>
+        <b>Welcome,</b> {anonymousUsername}.&nbsp;
+        <button onClick={handleLogout}>Logout</button>
+      </header>
       <div className='chatList' ref={chatRef}>
         {chats.map((chat) => {
           if (readError) return <ErrorMessage error={readError} />

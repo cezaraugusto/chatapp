@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import {auth} from '../api/firebase'
 import type {IChat, TError} from '../types'
 import * as ChatAPI from '../api/chat'
-import * as UnauthenticatedUserAPI from '../api/unauthenticatedUsers'
+import * as UsersAPI from '../api/unauthenticatedUsers'
 import Loading from './Chat/Loading'
 import AddNameScreen from './Chat/AddNameScreen'
 import ChatSidebar from './Chat/Sidebar'
@@ -21,7 +21,7 @@ function HomePage () {
     setReadError(null)
     setLoadingChats(true)
 
-    const readChats = ChatAPI.readChats((chatHistory) => {
+    ChatAPI.readChats((chatHistory) => {
       setChats(chatHistory)
       setLoadingChats(false)
     })
@@ -30,15 +30,24 @@ function HomePage () {
     // and start one from scratch. This prevents
     // duplicated entries during local dev.
     if (anonymousUsername) {
-      UnauthenticatedUserAPI.setUnauthenticatedUserNode({
+      UsersAPI.setUnauthenticatedUserNode({
         username: anonymousUsername,
         uid: (Date.now()).toString(),
         coordinates: [150, 60]
       })
     }
-
-    return () => readChats
   }, [anonymousUsername])
+
+  const handleUnload = () => {
+    UsersAPI.deleteUnauthenticatedUser()
+  }
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleUnload)
+    return () => {
+      window.removeEventListener('beforeunload', handleUnload)
+    }
+  }, [])
 
   const chatProps = {user, chats, readError, anonymousUsername}
 

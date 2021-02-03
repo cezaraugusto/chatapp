@@ -1,5 +1,4 @@
-
-import {db} from './firebase'
+import {auth, db} from './firebase'
 
 interface IReadUsers {
   (unauthenticatedUsers: any[]): void
@@ -18,6 +17,10 @@ export function readUnauthenticatedUsers (userCb: IReadUsers) {
 
     userCb(unauthenticatedUsers)
   })
+}
+
+export function deleteUnauthenticatedUser () {
+  auth().currentUser?.delete()
 }
 
 interface IUnauthenticatedUserNode {

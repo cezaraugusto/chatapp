@@ -24,12 +24,21 @@ function AddNameScreen ({setAnonymousUsername}: IAddNameScreen) {
 
   return (
     <form className='firstScreen' onSubmit={handleSubmit}>
+    <div className='nes-field'>
+      <label htmlFor='name_field'>Your name</label>
       <input
         type='text'
+        className='nes-input'
         onChange={handleChange}
         value={username}
       />
-      <input type='submit' disabled={username === ''} value='Go chat!' />
+    </div>
+      <input
+        type='submit'
+        className='nes-btn is-primary'
+        disabled={username === ''}
+        value='Go chat!'
+      />
     </form>
   )
 }

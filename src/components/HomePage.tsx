@@ -53,8 +53,6 @@ function HomePage () {
     anonymousUsername
   }
 
-  console.log('joy and suff')
-
   return anonymousUsername === ''
     ? (
       <AddNameScreen {...addNameProps} />

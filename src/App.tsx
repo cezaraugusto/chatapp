@@ -37,7 +37,9 @@ function App () {
         <Router>
           <nav>
             <Link to='/'>Home</Link>
-            <Link to='/howto'>How to</Link>
+            <Link to='/howto'>
+              <span className='nes-text is-success'>How to</span>
+            </Link>
           </nav>
           <Switch>
             <Route path='/howto'>

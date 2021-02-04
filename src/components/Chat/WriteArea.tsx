@@ -72,15 +72,15 @@ function WriteArea ({anonymousUsername, chatArea}: IWriteArea) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className='twoCol' onSubmit={handleSubmit}>
+      {writeError ? <p className='is-error'>{writeError}</p> : null}
       <textarea
-        name='content'
+        placeholder='What are you thinking?'
+        className='nes-textarea'
         onChange={handleChange}
         value={content}
       />
-      {/* TODO: errorbanner component */}
-      {writeError ? <p>{writeError}</p> : null}
-      <input type='submit' value='Send!' />
+      <input className='nes-btn is-primary' type='submit' value='Send!' />
     </form>
   )
 }

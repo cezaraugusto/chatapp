@@ -22,12 +22,13 @@ function ReadArea ({user, chat}: IReadArea) {
   }
 
   const getOwnId = `${user?.uid}-${chat.anonymousUsername}`
+
   return (
     <article
       key={chat.timestamp}
       className='nes-container with-title'
       style={{
-        borderColor: getOwnId === chat.uid ? '#92cc41' : 'inherit'
+        borderColor: getOwnId === chat.uid ? '#f7d51d' : 'inherit'
       }}
     >
       <header className='title'>

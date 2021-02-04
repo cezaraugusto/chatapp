@@ -34,19 +34,27 @@ export default function CanvasNode (props: Pick<Node<IChat>, any>) {
       trackVisibility
       delay={100}
       rootMargin='50px'
-      root={root as any}
+      root={root as HTMLElement}
       onChange={onChange}>
       <div
         data-tile
         id={id}
         ref={nodeRef}
-        style={{background: 'red', borderRadius: '10px'}}
+        className='message-list chat-user'
       >
-        <div style={{background: 'yellow'}}>
-          {(data.isCurrentNode || messageVisible) && data.lastMessage}
-        </div>
-        <div style={{padding: '10px', color: 'white'}}>
-          {content}
+        <section className='message -left'>
+          <div className='nes-balloon from-left'>
+            <p>{(data.isCurrentNode || messageVisible) && data.lastMessage}</p>
+          </div>
+        </section>
+        <div className='user-info'>
+          <i className='nes-ash' />
+          <div className='nes-badge'>
+            <span
+              className={data.isCurrentNode ? 'is-warning' : 'is-success'}>
+              {data.isCurrentNode ? `${content} (you!)` : content}
+            </span>
+          </div>
         </div>
       </div>
     </InView>

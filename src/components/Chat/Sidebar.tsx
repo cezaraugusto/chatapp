@@ -5,6 +5,7 @@ import type {IChat} from '../../types'
 import WriteArea from './WriteArea'
 import ReadArea from './ReadArea'
 import * as UsersAPI from '../../api/unauthenticatedUsers'
+import HowItWorksButton from '../HowItWorksButton'
 
 interface IChatSidebar {
   user: User | null
@@ -25,25 +26,28 @@ function ChatSidebar (props: IChatSidebar) {
       <section className='nes-container'>
         <p><b>Welcome,</b> {anonymousUsername}</p>
         <div className='mid-center'>
-          <button className='nes-btn is-primary' onClick={handleLogout}>
-            How it works?
-          </button>
+          <HowItWorksButton />
           <button className='nes-btn is-error' onClick={handleLogout}>
             Log me out!
           </button>
-          <button className='nes-btn is-normal' onClick={handleLogout}>
+          <a
+            className='nes-btn is-normal'
+            href='https://github.com/cezaraugusto/pokechat'
+            rel='noreferrer noopener'
+            target='_blank'
+          >
             Get the code
-          </button>
+          </a>
         </div>
       </section>
       <div className='mid-center'>
         <h3 className='topic-title'>
           Your workspace&nbsp;
-          <i className='nes-icon is-small heart'></i>
-          <i className='nes-icon is-small heart'></i>
-          <i className='nes-icon is-small heart'></i>
-          <i className='nes-icon is-small heart'></i>
-          <i className='nes-icon is-small heart'></i>
+          <i className='nes-icon is-small heart' />
+          <i className='nes-icon is-small heart' />
+          <i className='nes-icon is-small heart' />
+          <i className='nes-icon is-small heart' />
+          <i className='nes-icon is-small heart' />
         </h3>
       </div>
       <div

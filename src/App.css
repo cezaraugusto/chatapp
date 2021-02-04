@@ -5,7 +5,7 @@ body {
 
 main {
   display: grid;
-  grid-template-columns: 4fr 3fr;
+  grid-template-columns: 6fr 3fr;
 }
 
 nav a,
@@ -29,9 +29,12 @@ nav {
 main {
   display: grid;
   grid-gap: 10px;
-  min-width: 690px;
-  width: calc(690px + 525px);
+  max-width: 1600px;
   margin: auto;
+}
+
+dialog {
+  width: 600px;
 }
 
 .sidebar {
@@ -44,11 +47,13 @@ main {
   overflow-x: scroll;
 }
 
-.firstScreen {
-  display: flex;
-  justify-content: center;
+.first-screen {
+  display: grid;
+  grid-gap: 20px;
   align-items: center;
-  height: calc(100vh - 110px);
+  margin: auto;
+  width: 800px;
+  margin-top: 260px;
   flex-direction: column;
 }
 
@@ -87,4 +92,35 @@ main {
 
 .mid-center > * {
   margin: 0;
+}
+
+.loading {
+  height: 90vh;
+  width: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+}
+
+.loading h3 {
+  margin-top:40px;
+}
+
+.chat-user .message {
+  margin: -10px 70px;
+}
+
+.nes-ash {
+  display: block;
+}
+
+.chat-user .user-info {
+  display: block;
+  max-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }

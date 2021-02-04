@@ -23,16 +23,18 @@ function AddNameScreen ({setAnonymousUsername}: IAddNameScreen) {
   if (!showScreen) return null
 
   return (
-    <form className='firstScreen' onSubmit={handleSubmit}>
-    <div className='nes-field'>
-      <label htmlFor='name_field'>Your name</label>
+    <form className='first-screen nes-field' onSubmit={handleSubmit}>
+      <h1 className='section-title'>
+        Hello!<br />Welcome to the chat app
+      </h1>
       <input
         type='text'
+        name='namefield'
+        placeholder='Your name'
         className='nes-input'
         onChange={handleChange}
         value={username}
       />
-    </div>
       <input
         type='submit'
         className='nes-btn is-primary'

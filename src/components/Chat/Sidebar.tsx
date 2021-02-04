@@ -10,12 +10,11 @@ import * as UsersAPI from '../../api/unauthenticatedUsers'
 interface IChatSidebar {
   user: User | null
   chats: IChat[]
-  readError: TError
   anonymousUsername: string
 }
 
 function ChatSidebar (props: IChatSidebar) {
-  const {user, chats, readError, anonymousUsername} = props
+  const {user, chats, anonymousUsername} = props
   const chatRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
 
   const handleLogout = () => {
@@ -30,8 +29,6 @@ function ChatSidebar (props: IChatSidebar) {
       </header>
       <div className='chatList' ref={chatRef}>
         {chats.map((chat) => {
-          if (readError) return <ErrorMessage error={readError} />
-
           return (
             <ReadArea
               key={chat.timestamp}

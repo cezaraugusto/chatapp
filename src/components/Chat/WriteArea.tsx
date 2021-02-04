@@ -41,7 +41,7 @@ function WriteArea ({anonymousUsername, chatArea}: IWriteArea) {
       anonymousUsername: anonymousUsername,
       content: `${anonymousUsername} just joined.`,
       timestamp: Date.now(),
-      uid: user?.uid || ''
+      uid: `${user?.uid}-${anonymousUsername}` || ''
     }
 
     try {
@@ -60,7 +60,7 @@ function WriteArea ({anonymousUsername, chatArea}: IWriteArea) {
       anonymousUsername: anonymousUsername,
       content,
       timestamp: Date.now(),
-      uid: user?.uid || ''
+      uid: `${user?.uid}-${anonymousUsername}` || ''
     }
 
     try {

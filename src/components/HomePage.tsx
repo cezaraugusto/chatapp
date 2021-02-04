@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react'
 
 import {auth} from '../api/firebase'
-import type {IChat, TError} from '../types'
+import type {IChat} from '../types'
 import * as ChatAPI from '../api/chat'
 import * as UsersAPI from '../api/unauthenticatedUsers'
-import Loading from './Chat/Loading'
 import AddNameScreen from './Chat/AddNameScreen'
 import ChatSidebar from './Chat/Sidebar'
 import WorkspaceCanvas from './Workspace/Canvas'
@@ -14,17 +13,9 @@ function HomePage () {
   const [user] = useState(currentUser)
   const [anonymousUsername, setAnonymousUsername] = useState('')
   const [chats, setChats] = useState<IChat[]>([])
-  const [readError, setReadError] = useState<TError>(null)
-  const [loadingChats, setLoadingChats] = useState(false)
 
   useEffect(() => {
-    setReadError(null)
-    setLoadingChats(true)
-
-    ChatAPI.readChats((chatHistory) => {
-      setChats(chatHistory)
-      setLoadingChats(false)
-    })
+    ChatAPI.readChats((chatHistory) => setChats(chatHistory))
 
     // If user ID exist, delete previous node
     // and start one from scratch. This prevents
@@ -52,29 +43,28 @@ function HomePage () {
 
   if (!user) return null
 
-  const workspaceProps = {id: `${user?.uid}-${anonymousUsername}`}
-  const chatProps = {user, chats, readError, anonymousUsername}
+  const id = `${user?.uid}-${anonymousUsername}`
+  const addNameProps = {user, setAnonymousUsername}
+  const workspaceProps = {id, chats}
 
-  return (
-    <>
-      {loadingChats && <Loading />}
-      {
-        anonymousUsername === ''
-          ? (
-            <AddNameScreen
-              user={user}
-              setAnonymousUsername={setAnonymousUsername}
-            />
-            )
-          : (
-            <main>
-              <WorkspaceCanvas {...workspaceProps} />
-              <ChatSidebar {...chatProps} />
-            </main>
-            )
-      }
-    </>
-  )
+  const chatProps = {
+    user,
+    chats,
+    anonymousUsername
+  }
+
+  console.log('joy and suff')
+
+  return anonymousUsername === ''
+    ? (
+      <AddNameScreen {...addNameProps} />
+      )
+    : (
+      <main>
+        <WorkspaceCanvas {...workspaceProps} />
+        <ChatSidebar {...chatProps} />
+      </main>
+      )
 }
 
 export default HomePage

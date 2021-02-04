@@ -6,22 +6,22 @@ import type {IChat} from '../../types'
 
 export default function CanvasNode (props: Pick<Node<IChat>, any>) {
   const {id, content, data} = props
-  const [
-    messageVisiblityInternal,
-    setMessageVisibilityInternal
-  ] = useState({inView: true, id})
-
+  const [closestNodeId, setClosestNodeId] = useState('')
+  const [messageVisible, setMessageVisible] = useState(closestNodeId === id)
   const nodeRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
   const root = nodeRef.current?.parentNode?.parentNode
+
   const onChange = (inView: boolean, entry: any) => {
-    // TODO: Get current and intersected IDs
-    // and lift state up so SidebarChat can react.
-    // TOOD: Each message within the sidebar should
-    // share the same ID
-    if (inView) {
-      console.log('in view', entry.target.firstElementChild.id)
-    } else {
-      console.log('not in view')
+    const childElement = entry.target.firstElementChild
+    const otherPersonId = childElement.id || ''
+
+    if (
+      childElement.dataset &&
+      childElement.dataset.tile &&
+      id === otherPersonId
+    ) {
+      setClosestNodeId(otherPersonId)
+      setMessageVisible(true)
     }
   }
 
@@ -34,10 +34,14 @@ export default function CanvasNode (props: Pick<Node<IChat>, any>) {
       root={root as any}
       onChange={onChange}>
       <div
+        data-tile
         id={id}
         ref={nodeRef}
         style={{background: 'red', borderRadius: '10px'}}
       >
+        <div style={{background: 'yellow'}}>
+          {(data.isCurrentNode || messageVisible) && data.lastMessage}
+        </div>
         <div style={{padding: '10px', color: 'white'}}>
           {content}
         </div>

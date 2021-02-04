@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
+import type {User} from '@firebase/auth-types'
 
 interface IAddNameScreen {
-  user: any
+  user: User
   setAnonymousUsername: (username: string) => void
 }
 

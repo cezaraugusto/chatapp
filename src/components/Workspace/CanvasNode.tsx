@@ -11,13 +11,16 @@ export default function CanvasNode (props: Pick<Node<IChat>, any>) {
   const nodeRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
   const root = nodeRef.current?.parentNode?.parentNode
 
-  const onChange = (inView: boolean, entry: any) => {
-    const childElement = entry.target.firstElementChild
-    const otherPersonId = childElement.id || ''
+  const onChange = (
+    inView: boolean,
+    entry: IntersectionObserverEntry
+  ) => {
+    const childElement = entry?.target?.firstElementChild as HTMLElement
+    const otherPersonId = childElement ? childElement?.id : ''
 
     if (
-      childElement.dataset &&
-      childElement.dataset.tile &&
+      childElement?.dataset &&
+      childElement?.dataset.tile &&
       id === otherPersonId
     ) {
       setClosestNodeId(otherPersonId)

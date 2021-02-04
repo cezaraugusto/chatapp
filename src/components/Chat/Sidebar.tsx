@@ -1,10 +1,9 @@
 import React, {useRef} from 'react'
 import type {User} from '@firebase/auth-types'
 
-import type {IChat, TError} from '../../types'
+import type {IChat} from '../../types'
 import WriteArea from './WriteArea'
 import ReadArea from './ReadArea'
-import ErrorMessage from './ErrorMessage'
 import * as UsersAPI from '../../api/unauthenticatedUsers'
 
 interface IChatSidebar {

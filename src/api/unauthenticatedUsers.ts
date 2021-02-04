@@ -1,15 +1,15 @@
 import {auth, db} from './firebase'
 
-interface IReadUsers {
-  (unauthenticatedUsers: any[]): void
+export interface IReadUsers {
+  (unauthenticatedUsers: string[]): void
 }
 
 export function readUnauthenticatedUsers (userCb: IReadUsers) {
   db.ref('unauthenticatedUsers').on('value', snapshot => {
     if (!snapshot || !snapshot.val()) return
 
-    const unauthenticatedUsers: any[] = []
-    const currentUsers: any[] = Object.values(snapshot.val())
+    const unauthenticatedUsers: string[] = []
+    const currentUsers: string[] = Object.values(snapshot.val())
 
     for (const user of currentUsers) {
       unauthenticatedUsers.push(user)

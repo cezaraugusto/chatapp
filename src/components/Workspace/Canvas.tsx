@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useMemo} from 'react'
+import React, {useState, useEffect} from 'react'
 import Diagram, {createSchema, useSchema} from 'beautiful-react-diagrams'
-import type {DiagramSchema} from 'beautiful-react-diagrams/@types/DiagramSchema'
+import type {Node, DiagramSchema} from 'beautiful-react-diagrams/@types/DiagramSchema'
 import uniqBy from 'lodash/uniqBy'
 
 import 'beautiful-react-diagrams/styles.css'
@@ -14,20 +14,20 @@ interface IWorkspaceCanvas {
 }
 
 const WorkspaceCanvas = ({id, chats}: IWorkspaceCanvas) => {
-  const [nodeList, setNodeList] = useState([])
+  const [nodeList, setNodeList] = useState([] as Array<Node<unknown>>)
   const initialSchema = createSchema({nodes: nodeList, links: []})
 
   const [schema, {addNode, onChange}] = useSchema(initialSchema)
 
   const handleOnChange = (newSchema: DiagramSchema<unknown>) => {
     onChange(newSchema)
-    setNodeList(newSchema.nodes as any)
+    setNodeList(newSchema.nodes as [])
   }
 
   useEffect(() => {
     const unauthUsersNodeList = UsersAPI
-      .readUnauthenticatedUsers((currentUsers) => {
-        setNodeList(currentUsers as any)
+      .readUnauthenticatedUsers((currentUsers: any[]) => {
+        setNodeList(currentUsers)
       })
 
     return () => unauthUsersNodeList

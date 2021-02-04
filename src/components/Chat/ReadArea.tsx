@@ -18,23 +18,25 @@ function ReadArea ({user, chat}: IReadArea) {
       minute: date.getMinutes()
     }
 
-    return `${time.date} ${time.hour}:${time.minute}`
+    return `${time.hour}:${time.minute}`
   }
 
+  const getOwnId = `${user?.uid}-${chat.anonymousUsername}`
   return (
     <article
       key={chat.timestamp}
+      className='nes-container with-title'
       style={{
-        background: user?.uid === chat.uid ? 'lightgreen' : 'lightgray'
+        borderColor: getOwnId === chat.uid ? '#92cc41' : 'inherit'
       }}
     >
-      {chat.content}
-      <footer>
-        {`${formatTime()} by `}
+      <header className='title'>
+        {chat.anonymousUsername}
         <time dateTime={date.toDateString()}>
-          {chat.anonymousUsername}
+          ({formatTime()})
         </time>
-      </footer>
+      </header>
+    {chat.content}
     </article>
   )
 }

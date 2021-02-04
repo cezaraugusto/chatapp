@@ -64,15 +64,13 @@ const WorkspaceCanvas = ({id, chats}: IWorkspaceCanvas) => {
   }
 
   return (
-    <div style={{height: '550px'}}>
-      <Diagram
-        schema={{
-          links: [],
-          nodes: uniqBy(getNodes(), 'id') as any
-        }}
-        onChange={handleOnChange}
-      />
-    </div>
+    <Diagram
+      schema={{
+        links: [],
+        nodes: uniqBy(getNodes(), 'id') as any
+      }}
+      onChange={handleOnChange}
+    />
   )
 }
 

@@ -21,14 +21,35 @@ function ChatSidebar (props: IChatSidebar) {
   }
 
   return (
-    <section>
-      <header>
-        <b>Welcome,</b> {anonymousUsername}
-        <button className='nes-btn is-error' onClick={handleLogout}>
-          Logout
-        </button>
-      </header>
-      <div className='chatList' ref={chatRef}>
+    <section className='sidebar'>
+      <section className='nes-container'>
+        <p><b>Welcome,</b> {anonymousUsername}</p>
+        <div className='mid-center'>
+          <button className='nes-btn is-primary' onClick={handleLogout}>
+            How it works?
+          </button>
+          <button className='nes-btn is-error' onClick={handleLogout}>
+            Log me out!
+          </button>
+          <button className='nes-btn is-normal' onClick={handleLogout}>
+            Get the code
+          </button>
+        </div>
+      </section>
+      <div className='mid-center'>
+        <h3 className='topic-title'>
+          Your workspace&nbsp;
+          <i className='nes-icon is-small heart'></i>
+          <i className='nes-icon is-small heart'></i>
+          <i className='nes-icon is-small heart'></i>
+          <i className='nes-icon is-small heart'></i>
+          <i className='nes-icon is-small heart'></i>
+        </h3>
+      </div>
+      <div
+        ref={chatRef}
+        className='chatList'
+      >
         {chats.map((chat) => {
           return (
             <ReadArea

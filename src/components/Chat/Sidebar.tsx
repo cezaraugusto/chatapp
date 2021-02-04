@@ -21,10 +21,12 @@ function ChatSidebar (props: IChatSidebar) {
   }
 
   return (
-    <section id='sidebar'>
+    <section>
       <header>
-        <b>Welcome,</b> {anonymousUsername}.&nbsp;
-        <button onClick={handleLogout}>Logout</button>
+        <b>Welcome,</b> {anonymousUsername}
+        <button className='nes-btn is-error' onClick={handleLogout}>
+          Logout
+        </button>
       </header>
       <div className='chatList' ref={chatRef}>
         {chats.map((chat) => {

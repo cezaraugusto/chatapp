@@ -44,7 +44,13 @@ const WorkspaceCanvas = ({id, chats}: IWorkspaceCanvas) => {
   const getUserLastMessage = (userId: string) => {
     const userMessages = chats.filter(user => user.uid === userId)
 
-    return userMessages[userMessages.length - 1] || ''
+    if (
+      userMessages.length >= 1 &&
+      userMessages[userMessages.length - 1]
+    ) {
+      return userMessages[userMessages.length - 1].content
+    }
+    return 'Hello!'
   }
 
   // Iterate over nodes so we can have them w/ custom styles
@@ -55,7 +61,7 @@ const WorkspaceCanvas = ({id, chats}: IWorkspaceCanvas) => {
       ...node,
       render: CanvasNode,
       data: {
-        lastMessage: getUserLastMessage(node.id).content,
+        lastMessage: getUserLastMessage(node.id),
         isCurrentNode: node.id === id
       },
       // We can only drag the active user

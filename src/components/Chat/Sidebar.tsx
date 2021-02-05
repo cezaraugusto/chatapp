@@ -30,14 +30,6 @@ function ChatSidebar (props: IChatSidebar) {
           <button className='nes-btn is-error' onClick={handleLogout}>
             Log me out!
           </button>
-          <a
-            className='nes-btn is-normal'
-            href='https://github.com/cezaraugusto/pokechat'
-            rel='noreferrer noopener'
-            target='_blank'
-          >
-            Get the code
-          </a>
         </div>
       </section>
       <div className='mid-center'>

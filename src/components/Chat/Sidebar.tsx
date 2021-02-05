@@ -4,7 +4,7 @@ import type {User} from '@firebase/auth-types'
 import type {IChat} from '../../types'
 import WriteArea from './WriteArea'
 import ReadArea from './ReadArea'
-import * as UsersAPI from '../../api/unauthenticatedUsers'
+import * as AuthAPI from '../../api/auth'
 import HowItWorksButton from '../HowItWorksButton'
 
 interface IChatSidebar {
@@ -18,7 +18,7 @@ function ChatSidebar (props: IChatSidebar) {
   const chatRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
 
   const handleLogout = () => {
-    UsersAPI.deleteUnauthenticatedUser()
+    AuthAPI.deleteUnauthenticatedUser()
   }
 
   return (

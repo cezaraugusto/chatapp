@@ -9,7 +9,7 @@ import {
 import './App.css'
 import {auth} from './api/firebase'
 import HomePage from './components/HomePage'
-import {authenticateAnonymously} from './api/authenticateAnonymously'
+import * as AuthAPI from './api/auth'
 
 function App () {
   const [authenticated, setAuthenticated] = useState(false)
@@ -22,7 +22,7 @@ function App () {
         return
       }
 
-      authenticateAnonymously()
+      AuthAPI.authenticateAnonymously()
       setAuthenticated(false)
     })
   }, [])

@@ -4,7 +4,7 @@ import type {Node, DiagramSchema} from 'beautiful-react-diagrams/@types/DiagramS
 import uniqBy from 'lodash/uniqBy'
 
 import 'beautiful-react-diagrams/styles.css'
-import * as UsersAPI from '../../api/unauthenticatedUsers'
+import * as AuthAPI from '../../api/auth'
 import CanvasNode from './CanvasNode'
 import type {IChat} from '../../types'
 
@@ -25,7 +25,7 @@ const WorkspaceCanvas = ({id, chats}: IWorkspaceCanvas) => {
   }
 
   useEffect(() => {
-    const unauthUsersNodeList = UsersAPI
+    const unauthUsersNodeList = AuthAPI
       .readUnauthenticatedUsers((currentUsers: any[]) => {
         setNodeList(currentUsers)
       })

@@ -3,8 +3,8 @@ import React, {useState, useEffect} from 'react'
 import {auth} from '../api/firebase'
 import type {IChat} from '../types'
 import * as ChatAPI from '../api/chat'
-import * as UsersAPI from '../api/unauthenticatedUsers'
-import AddNameScreen from './Chat/AddNameScreen'
+import * as AuthAPI from '../api/auth'
+import AddNameScreen from './AddNameScreen'
 import ChatSidebar from './Chat/Sidebar'
 import WorkspaceCanvas from './Workspace/Canvas'
 
@@ -27,7 +27,7 @@ function HomePage () {
     // and start one from scratch. This prevents
     // duplicated entries during local dev.
     if (user && anonymousUsername) {
-      UsersAPI.setUnauthenticatedUserNode({
+      AuthAPI.setUnauthenticatedUserNode({
         username: anonymousUsername,
         uid: user?.uid,
         coordinates: [randomNumber(150, 700), randomNumber(150, 700)]
@@ -36,7 +36,7 @@ function HomePage () {
   }, [user, anonymousUsername])
 
   const handleUnload = () => {
-    UsersAPI.deleteUnauthenticatedUser()
+    AuthAPI.deleteUnauthenticatedUser()
   }
 
   useEffect(() => {

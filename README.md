@@ -10,6 +10,7 @@
 2. cd chatapp
 3. yarn install
 4. yarn start
+5. Will listen to https://localhost:3000
 
 ## Requirements
 

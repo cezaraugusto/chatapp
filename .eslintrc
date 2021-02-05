@@ -3,5 +3,8 @@
     "auditor",
     "auditor/react",
     "auditor/typescript"
-  ]
+  ],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off"
+  }
 }

@@ -9,4 +9,3 @@ test('renders loading page', () => {
 
   expect(linkElement).toBeInTheDocument()
 })
-

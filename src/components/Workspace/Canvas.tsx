@@ -50,6 +50,7 @@ const WorkspaceCanvas = ({id, chats}: IWorkspaceCanvas) => {
     ) {
       return userMessages[userMessages.length - 1].content
     }
+
     return 'Hello!'
   }
 

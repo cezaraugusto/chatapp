@@ -7,6 +7,19 @@ jobs:
   build_and_preview:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with: {node-version: '10.x'}
+      - name: Setup Volta
+        uses: rwjblue/setup-volta@v1
+      - name: Setup SHA
+        uses: rlespinasse/github-slug-action@v2.x
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        uses: bahmutov/npm-install@v1
+        env:
+          NODE_ENV: development
       - uses: actions/checkout@v2
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:

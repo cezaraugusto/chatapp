@@ -10,7 +10,21 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with: {node-version: '10.x'}
+      - name: Setup Volta
+        uses: rwjblue/setup-volta@v1
+      - name: Setup SHA
+        uses: rlespinasse/github-slug-action@v2.x
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        uses: bahmutov/npm-install@v1
+        env:
+          NODE_ENV: development
+      - name: Build Distribution
+        run: yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
@@ -19,3 +33,4 @@ jobs:
           projectId: tribe2021
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
+

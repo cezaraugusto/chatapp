@@ -44,7 +44,7 @@ const WorkspaceCanvas = ({id, chats}: IWorkspaceCanvas) => {
   const getUserLastMessage = (userId: string) => {
     const userMessages = chats.filter(user => user.uid === userId)
 
-    return userMessages[userMessages.length - 1]
+    return userMessages[userMessages.length - 1] || ''
   }
 
   // Iterate over nodes so we can have them w/ custom styles

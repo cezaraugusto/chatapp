@@ -82,6 +82,7 @@ dialog {
   background-repeat: no-repeat;
   background-size: cover;
   height: 400px !important;
+  padding: 0 !important;
 }
 
 .mid-center {
@@ -116,6 +117,10 @@ dialog {
   display: block;
 }
 
+.chat-user:first-child {
+  z-index: 1000;
+}
+
 .chat-user .user-info {
   display: block;
   max-width: 200px;
@@ -123,4 +128,16 @@ dialog {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width: 50px;
+}
+
+.nes-balloon {
+  pointer-events: none !important;
+  position: absolute !important;
+  top: -90px !important;
+  left: -25px !important;
+}
+
+.message {
+  position: relative !important;
 }

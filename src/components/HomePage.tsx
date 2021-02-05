@@ -8,6 +8,12 @@ import AddNameScreen from './Chat/AddNameScreen'
 import ChatSidebar from './Chat/Sidebar'
 import WorkspaceCanvas from './Workspace/Canvas'
 
+function randomNumber (min: number, max: number) {
+  const r = Math.random() * (max - min) + min
+
+  return Math.floor(r)
+}
+
 function HomePage () {
   const currentUser = auth().currentUser
   const [user] = useState(currentUser)
@@ -24,7 +30,7 @@ function HomePage () {
       UsersAPI.setUnauthenticatedUserNode({
         username: anonymousUsername,
         uid: user?.uid,
-        coordinates: [Math.random() * 500, Math.random() * 500]
+        coordinates: [randomNumber(150, 700), randomNumber(150, 700)]
       })
     }
   }, [user, anonymousUsername])
